@@ -11,22 +11,24 @@ channels:
   - pytorch
   - defaults
 dependencies:
-  - python==3.7
+  - python==3.7.2
   - pip
   - cython 
-  - pytorch::torchvision
-  - pytorch::pytorch >=1.0.1
-  - cudatoolkit
+  # - pytorch::torchvision
+  # - pytorch::pytorch >=1.0.1
+  # - cudatoolkit
   - cudnn
-  - pytorch::cuda100
+  # - pytorch::cuda100
   - matplotlib
-  - git # to download COCO dataset
-  - curl # to download COCO dataset
-  - unzip # to download COCO dataset
-  - conda-forge::bash # to download COCO dataset
+  # - git # to download COCO dataset
+  # - curl # to download COCO dataset
+  # - unzip # to download COCO dataset
+  # - conda-forge::bash # to download COCO dataset
   - pip:
     - opencv-python 
     - pillow <7.0 # bug PILLOW_VERSION in torchvision, must be < 7.0 until torchvision is upgraded
     - pycocotools 
     - PyQt5 # needed on KDE/Qt envs for matplotlib
 
+# Manual install pythorch 1.13.1 with CUDA 11.7
+# pip3 install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu117
