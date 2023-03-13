@@ -161,3 +161,5 @@ _.py
 
 # model wheights
 *.pth
+# output files
+content/
