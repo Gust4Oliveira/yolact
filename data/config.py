@@ -128,6 +128,52 @@ dataset_base = Config({
     'label_map': None
 })
 
+lips_on_rmi_dataset = Config({
+    'name': 'Lips on RMI',
+
+    # Training images and annotations
+    'train_images': 'C:/Users/gusta/OneDrive/Documentos/TCC/Dataset/Pos-notacao_120Seg/InstanceSegmentation/120Seg.v2i.coco-segmentation/train/',
+    'train_info':   'C:/Users/gusta/OneDrive/Documentos/TCC/Dataset/Pos-notacao_120Seg/InstanceSegmentation/120Seg.v2i.coco-segmentation/train/_annotations.coco.json',
+
+    # Validation images and annotations.
+    'valid_images': 'C:/Users/gusta/OneDrive/Documentos/TCC/Dataset/Pos-notacao_120Seg/InstanceSegmentation/120Seg.v2i.coco-segmentation/valid/',
+    'valid_info':   'C:/Users/gusta/OneDrive/Documentos/TCC/Dataset/Pos-notacao_120Seg/InstanceSegmentation/120Seg.v2i.coco-segmentation/valid/_annotations.coco.json',
+
+    # Whether or not to load GT. If this is False, eval.py quantitative evaluation won't work.
+    'has_gt': True,
+
+    # A list of names for each of you classes.
+    'class_names': ('lower_lip','upper_lip'),
+
+    # COCO class ids aren't sequential, so this is a bandage fix. If your ids aren't sequential,
+    # provide a map from category_id -> index in class_names + 1 (the +1 is there because it's 1-indexed).
+    # If not specified, this just assumes category ids start at 1 and increase sequentially.
+    'label_map': { 1: 1,2: 2 }
+})
+
+lips_on_rmi_dataset_700 = Config({
+    'name': 'Lips on RMI',
+
+    # Training images and annotations
+    'train_images': 'C:/Users/gusta/OneDrive/Documentos/TCC/Dataset/Pos-notacao_120Seg/InstanceSegmentation/120Seg.v3-700.coco-segmentation/train/',
+    'train_info':   'C:/Users/gusta/OneDrive/Documentos/TCC/Dataset/Pos-notacao_120Seg/InstanceSegmentation/120Seg.v3-700.coco-segmentation/train/_annotations.coco.json',
+
+    # Validation images and annotations.
+    'valid_images': 'C:/Users/gusta/OneDrive/Documentos/TCC/Dataset/Pos-notacao_120Seg/InstanceSegmentation/120Seg.v3-700.coco-segmentation/valid/',
+    'valid_info':   'C:/Users/gusta/OneDrive/Documentos/TCC/Dataset/Pos-notacao_120Seg/InstanceSegmentation/120Seg.v3-700.coco-segmentation/valid/_annotations.coco.json',
+
+    # Whether or not to load GT. If this is False, eval.py quantitative evaluation won't work.
+    'has_gt': True,
+
+    # A list of names for each of you classes.
+    'class_names': ('lower_lip','upper_lip'),
+
+    # COCO class ids aren't sequential, so this is a bandage fix. If your ids aren't sequential,
+    # provide a map from category_id -> index in class_names + 1 (the +1 is there because it's 1-indexed).
+    # If not specified, this just assumes category ids start at 1 and increase sequentially.
+    'label_map': { 1: 1,2: 2 }
+})
+
 coco2014_dataset = dataset_base.copy({
     'name': 'COCO 2014',
     
@@ -805,6 +851,53 @@ yolact_plus_resnet50_config = yolact_plus_base_config.copy({
     }),
 })
 
+lips_on_rmi_resnet50_config = yolact_resnet50_config.copy({
+    'name': "lips_on_rmi_resnet50",
+
+    'dataset': lips_on_rmi_dataset,
+    'num_classes': len(lips_on_rmi_dataset.class_names) + 1,
+    'max_size': 550
+})
+
+lips_on_rmi_resnet101_config = yolact_base_config.copy({
+    'name': "lips_on_rmi_resnet101",
+
+    'dataset': lips_on_rmi_dataset,
+    'num_classes': len(lips_on_rmi_dataset.class_names) + 1,
+    'max_size': 550
+})
+
+lips_on_rmi_darknet53_config = darknet53_backbone.copy({
+    'name': "lips_on_rmi_darknet53",
+
+    'dataset': lips_on_rmi_dataset,
+    'num_classes': len(lips_on_rmi_dataset.class_names) + 1,
+    'max_size': 550
+})
+
+lips_on_rmi_resnet101_700_config = yolact_base_config.copy({
+    'name': "lips_on_rmi_resnet101_700",
+
+    'dataset': lips_on_rmi_dataset_700,
+    'num_classes': len(lips_on_rmi_dataset_700.class_names) + 1,
+    'max_size': 700
+})
+
+yolact_plus_lips_on_rmi_resnet101_config = yolact_base_config.copy({
+    'name': "yolact_plus_lips_on_rmi_resnet101",
+
+    'dataset': lips_on_rmi_dataset,
+    'num_classes': len(lips_on_rmi_dataset.class_names) + 1,
+    'max_size': 550
+})
+
+yolact_plus_lips_on_rmi_resnet50_config = yolact_plus_resnet50_config.copy({
+    'name': "yolact_plus_lips_on_rmi_resnet50",
+
+    'dataset': lips_on_rmi_dataset,
+    'num_classes': len(lips_on_rmi_dataset.class_names) + 1,
+    'max_size': 550
+})
 
 # Default config
 cfg = yolact_base_config.copy()

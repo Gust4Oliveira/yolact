@@ -476,7 +476,7 @@ class Yolact(nn.Module):
     
     def load_weights(self, path):
         """ Loads weights from a compressed save file. """
-        state_dict = torch.load(path)
+        state_dict = torch.load(path,map_location='cuda:0')
 
         # For backward compatability, remove these (the new variable is called layers)
         for key in list(state_dict.keys()):

@@ -29,6 +29,10 @@ from PIL import Image
 import matplotlib.pyplot as plt
 import cv2
 
+import logging
+ 
+
+
 def str2bool(v):
     if v.lower() in ('yes', 'true', 't', 'y', '1'):
         return True
@@ -246,6 +250,7 @@ def prep_display(dets_out, img, h, w, undo_transform=True, class_color=False, ma
                 _class = cfg.dataset.class_names[classes[j]]
                 text_str = '%s: %.2f' % (_class, score) if args.display_scores else _class
 
+                logging.info(str(_class) + " - " + str(score))
                 font_face = cv2.FONT_HERSHEY_DUPLEX
                 font_scale = 0.6
                 font_thickness = 1
@@ -258,7 +263,6 @@ def prep_display(dets_out, img, h, w, undo_transform=True, class_color=False, ma
                 cv2.rectangle(img_numpy, (x1, y1), (x1 + text_w, y1 - text_h - 4), color, -1)
                 cv2.putText(img_numpy, text_str, text_pt, font_face, font_scale, text_color, font_thickness, cv2.LINE_AA)
             
-    
     return img_numpy
 
 def prep_benchmark(dets_out, h, w):
@@ -747,9 +751,9 @@ def evalvideo(net:Yolact, path:str, out_path:str=None):
                             fps = 1 / video_frame_times.get_avg()
                         progress = frames_displayed / num_frames * 100
                         progress_bar.set_val(frames_displayed)
-
+                        logging.info('%5.2f fps' % fps)
                         print('\rProcessing Frames  %s %6d / %6d (%5.2f%%)    %5.2f fps        '
-                            % (repr(progress_bar), frames_displayed, num_frames, progress, fps), end='')
+                            % (repr(progress_bar), frames_displayed, num_frames, progress, fps), end='') 
 
                 
                 # This is split because you don't want savevideo to require cv2 display functionality (see #197)
@@ -874,19 +878,19 @@ def evaluate(net:Yolact, dataset, train_mode=False):
 
     # TODO Currently we do not support Fast Mask Re-scroing in evalimage, evalimages, and evalvideo
     if args.image is not None:
-        if ':' in args.image:
-            inp, out = args.image.split(':')
+        if ';' in args.image:
+            inp, out = args.image.split(';')
             evalimage(net, inp, out)
         else:
             evalimage(net, args.image)
         return
     elif args.images is not None:
-        inp, out = args.images.split(':')
+        inp, out = args.images.split(';')
         evalimages(net, inp, out)
         return
     elif args.video is not None:
-        if ':' in args.video:
-            inp, out = args.video.split(':')
+        if ';' in args.video:
+            inp, out = args.video.split(';')
             evalvideo(net, inp, out)
         else:
             evalvideo(net, args.video)
@@ -1048,6 +1052,8 @@ def print_maps(all_maps):
 
 if __name__ == '__main__':
     parse_args()
+
+    logging.basicConfig(filename=f"{args.trained_model}_log.txt",filemode='a',level=logging.DEBUG)
 
     if args.config is not None:
         set_cfg(args.config)
